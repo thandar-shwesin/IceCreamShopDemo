@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/style.cshtml";
+}
+
+<nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-brand col-md-offset-0" style="font-family:Jokerman"> <h1>IceCream Bar</h1></span>
+</nav>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="container">
+            <div class="list-group-item list-group-item-action active">
+                Item
+            </div>
+            <div class="panel-body bg-dark" style="color:white">
+                <form id="frm-project">
+                    <div class="form-group">
+                        <div>
+                            <img src="~/images/chocolate-icecream.jpg" id="choco" class="photo" width="120" height="100" data-toggle="modal" data-target="#exampleModal" />
+                            <b>Chocolate</b>
+                        </div>
+
+                        <div>
+                            <img src="~/images/mintChocolateChip-icecream.jpg" id="chocoChip" class="photo" width="120" height="100" data-toggle="modal" data-target="#exampleModal" />
+                            <b>MintChocoChip</b>
+                        </div>
+
+                        <div>
+                            <img src="~/images/mixfruit.jpg" id="mixfruit" class="photo" width="120" height="100" data-toggle="modal" data-target="#exampleModal" />
+                            <b>MixFruit</b>
+                        </div>
+
+                        <div>
+                            <img src="~/images/strawberry.jpg" id="strawberry" class="photo" width="120" height="100" data-toggle="modal" data-target="#exampleModal" />
+                            <b>Strawberry</b>
+                        </div>
+
+                        <div>
+                            <img src="~/images/vanilla.jpg" id="vanilla" class="photo" width="120" height="100" data-toggle="modal" data-target="#exampleModal" />
+                            <b>Vanilla</b>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="list-group-item list-group-item-action active">Add Product</div>
+
+            <table id="tb-item" class="table table-dark table-bordered" cellpadding="0" cellspacing="0" align="center">
+                <thead>
+                    <tr>
+                        <th>Delete</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+
+                <tbody>
+                </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="container">
+            <div class="list-group-item list-group-item-action active">Bill</div>
+            <div>
+                <label>Total</label>
+                <input type="text" style="color:yellow; background:black; font-size:30px;" id="total" name="total" placeholder="total" />
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-warning" value="Reset" name="reset" id="reset" onclick="reset()">Reset</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Enter the Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Quantity</label>
+                    <input type="number" id="qty" name="quantity" placeholder="quantity" value="1" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="add()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+    <script type="text/javascript">
+        var total = 0;
+        var tot = 0;
+        var item = null;
+        var price = 0;
+
+        var a = "";
+
+        $("img").on("click", function () {
+            a = $(this).prop('id')
+        });
+
+        function add() {
+            if (a == 'choco') {
+                item = "Chocolate";
+                price = 1500;
+            }
+            else if (a == 'chocoChip') {
+                item = "MintChocoChip";
+                price = 2000;
+            }
+            else if (a == 'mixfruit') {
+                item = "MixFruit";
+                price = 2500;
+            }
+            else if (a == 'strawberry') {
+                item = "Strawberry";
+                price = 1500;
+            }
+            else if (a == 'vallina') {
+                item = "Vallina";
+                price = 1500;
+            }
+
+            var qty = $("#qty").val();
+
+            tot = qty * price;
+
+            var table = "<tr>" +
+                "<td> <button type='button' name='record' class='btn btn-warning' onClick='deleterow(this)'> Delete </td>" +
+                "<td>" + item + "</td>" +
+                "<td>" + price + "</td>" +
+                "<td>" + qty + "</td>" +
+                "<td>" + tot + "</td>" +
+                "</tr>";
+
+            total += Number(tot);
+            $("#total").val(total);
+            $("#tb-item tbody").append(table);
+
+            $("#exampleModal").modal(hide);
+
+        }
+
+        //delete 
+        function deleterow(e) {
+            total_cost = parseInt($(e).parent().parent().find('td:last').text(), 10);
+            total -= total_cost;
+
+            $('#total').val(total);
+
+            $(e).parent().parent().remove();
+        }
+
+        //reset
+        function reset() {
+            location.reload();
+        }
+    </script>
+}
